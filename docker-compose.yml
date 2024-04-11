@@ -1,11 +1,13 @@
-version: '3'
+﻿version: '3'
 services:
     confluence:
-        image: "atlassian/confluence-server"
+        image: "atlassian/confluence-server:8.0.2"
+        container_name: confluence
+        depends_on:
+            - db
         volumes: 
             - ./atlassian-agent.jar:/var/atlassian/atlassian-agent.jar
-            - ./mysql-connector-java-8.0.22.jar:/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java-8.0.22.jar
-            - ~/your-confluence-home:/var/atlassian/application-data/confluence
+            - /var/atlassian/application-data/confluence:/var/atlassian/application-data/confluence
         environment:
             - JAVA_OPTS="-javaagent:/var/atlassian/atlassian-agent.jar"
             - JVM_MINIMUM_MEMORY=2048m
@@ -13,4 +15,15 @@ services:
             - JVM_RESERVED_CODE_CACHE_SIZE=512m
         ports: 
             - "8090:8090"
+            - "8091:8091"
         restart: always
+    db:
+        image: postgres:latest
+        container_name: postgres-db
+        ports:
+          - "5432:5432"
+        restart: always
+        environment:
+          - POSTGRES_PASSWORD=113661
+        volumes:
+          - /home/app/confluence/pgsql-data:/var/lib/postgresql/data
