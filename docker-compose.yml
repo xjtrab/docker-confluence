@@ -18,8 +18,10 @@ services:
             - "8091:8091"
         restart: always
     jira:
-        image: "atlassian/jira-software:8.20.2"
+        image: "atlassian/jira-software:8.1.0"
         container_name: jira
+        depends_on:
+            - db
         hostname: jira
         ports:
             - "8080:8080"
