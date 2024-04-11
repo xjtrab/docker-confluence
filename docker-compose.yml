@@ -17,24 +17,6 @@ services:
             - "8090:8090"
             - "8091:8091"
         restart: always
-    jira:
-        image: "atlassian/jira-software:8.19.0"
-        container_name: jira
-        depends_on:
-            - db
-        hostname: jira
-        ports:
-            - "8080:8080"
-        restart: always
-        tty: true
-        volumes:
-            - ./atlassian-agent.jar:/var/atlassian/atlassian-agent.jar
-            - /var/atlassian/application-data/jira:/var/atlassian/application-data/jira
-        environment:
-            - JAVA_OPTS="-javaagent:/var/atlassian/atlassian-agent.jar"
-            - JVM_MINIMUM_MEMORY=2048m
-            - JVM_MAXIMUM_MEMORY=2048m
-            - JVM_RESERVED_CODE_CACHE_SIZE=512m
     db:
         image: postgres:latest
         container_name: postgres-db
